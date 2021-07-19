@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HeroKnightController : MonoBehaviour
-{
-    private bool isDead = false;
-    public float jumpForce = 350f; // 위쪽 방향키 입력했을 때 캐릭터의 위쪽으로 작용할 힘.
-    private Rigidbody2D heroKnightRigidbody;
+{    
+    private bool isDead = false; // 사망여부    
     private bool isGrounded = false; // 캐릭터가 점프했을 때 애니메이터에 Set시킬 상태.
-    private Animator heroKnightAnimator; // 애니메이터 접근용 변수
+    private float jumpForce = 350f; // 위쪽 방향키 입력했을 때 캐릭터의 위쪽으로 작용할 힘.
+    private Vector2 upRightForce = new Vector2(350f, 300f); // 오른쪽위로 점프할 때 가할 힘
+    private Vector2 upLeftForce = new Vector2(-350f, 300f); // 왼쪽위로 점프할 때 가할 힘    
+    private Vector2 horizontalMoveForce = new Vector2(8.0f, 0);   
+
+    private Rigidbody2D heroKnightRigidbody; // 리지드바디 접근용    
+    private Animator heroKnightAnimator; // 애니메이터 접근용
 
     // Start is called before the first frame update
     void Start()
@@ -17,8 +21,7 @@ public class HeroKnightController : MonoBehaviour
         heroKnightAnimator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
         if (isDead)
         {
@@ -26,17 +29,29 @@ public class HeroKnightController : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.UpArrow) && heroKnightRigidbody.velocity.y == 0) // 위쪽 방향키 입력을 했고, y축으로 속도가 설정되지 않은 상태라면 점프시킨다.
+            // 위쪽, 오른쪽 화살표가 같이 눌려져 있을 때(오른쪽위로 점프)
+            if(Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.RightArrow) && heroKnightRigidbody.velocity.y == 0)
             {
-                heroKnightRigidbody.AddForce(new Vector2(0, jumpForce));
+                heroKnightRigidbody.AddForce(upRightForce);
             }
-            else if (Input.GetKey(KeyCode.RightArrow)) // 오른쪽 방향키 입력
+            // 위쪽, 왼쪽 화살표가 같이 눌려져 있을 때(왼쪽위로 점프)
+            else if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.LeftArrow) && heroKnightRigidbody.velocity.y == 0)
             {
-                transform.Translate(0.2f, 0, 0);
+                heroKnightRigidbody.AddForce(upLeftForce);
             }
-            else if (Input.GetKey(KeyCode.LeftArrow)) // 왼쪽 방향키 입력
+            // 위쪽 방향키 입력했을 때(수직점프)
+            else if (Input.GetKeyDown(KeyCode.UpArrow) && heroKnightRigidbody.velocity.y == 0) 
             {
-                transform.Translate(-0.2f, 0, 0);
+                heroKnightRigidbody.AddForce(transform.up * jumpForce);
+            }
+            // 오른쪽 방향키 입력했을 때(우측무빙)
+            else if (Input.GetKey(KeyCode.RightArrow) && heroKnightRigidbody.velocity.y == 0)
+            {
+                heroKnightRigidbody.MovePosition(heroKnightRigidbody.position + horizontalMoveForce * Time.fixedDeltaTime);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow) && heroKnightRigidbody.velocity.y == 0) // 왼쪽 방향키 입력
+            {
+                heroKnightRigidbody.MovePosition(heroKnightRigidbody.position + horizontalMoveForce * -1 * Time.fixedDeltaTime);
             }
         }
 
@@ -48,7 +63,8 @@ public class HeroKnightController : MonoBehaviour
     {
         if (collision.transform.tag == "Ground")
         {
-            isGrounded = true;            
+            isGrounded = true;
+            heroKnightRigidbody.velocity = Vector2.zero; // 대각선 점프 후 착지했을 때 밀림 방지용.
         }
     }
 
