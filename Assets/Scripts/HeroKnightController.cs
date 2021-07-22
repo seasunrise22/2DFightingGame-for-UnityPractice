@@ -8,9 +8,11 @@ public class HeroKnightController : MonoBehaviour
     private bool isDead = false;        // 사망여부    
     private bool isGrounded = false;    // 캐릭터가 점프했을 때 애니메이터에 Set시킬 점프 상태.
     private bool isRun = false;         // 캐릭터를 좌우로 조작했을 때 애니메이터에 Set시킬 달리기 상태.
+    private bool trigger_Attack_A = false;    // A 공격 애니메이션 재생용 트리거.
 
     /* 타이머 */
     private float idleChecker;          // 아무것도 입력하지 않았을 때의 행동(달리기->Idle)을 결정짓기 위한 타이머
+    private float attackDelay;          // 공격 후 후딜 설정용.
 
     /* 캐릭터에 적용시킬 힘 */
     private float jumpForce = 350f;     // 위쪽 방향키 입력했을 때 캐릭터의 위쪽으로 작용할 힘.
@@ -37,52 +39,77 @@ public class HeroKnightController : MonoBehaviour
         }
         else
         {
-            // Idle 상태인지 아닌지 체크
-            idleChecker += Time.fixedDeltaTime;
+            MoveFunction();
+            AttackFunction();
 
-            if (idleChecker > 0.1f) // 단위 초
-                isRun = false;
-            else
-                isRun = true;
-
-            // 캐릭터가 점프 후 낙하하고 있을 때 좀 더 빨리 떨어지도록 하기 위한 코드
-            if(heroKnightRigidbody.velocity.y < 0)
-            {
-                heroKnightRigidbody.AddForce(gravityForce);
-            }
-
-            // '오른쪽+위' 입력
-            if(Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.RightArrow) && heroKnightRigidbody.velocity.y == 0)
-            {
-                heroKnightRigidbody.AddForce(upRightForce);
-            }
-            // '왼쪽+위' 입력
-            else if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.LeftArrow) && heroKnightRigidbody.velocity.y == 0)
-            {
-                heroKnightRigidbody.AddForce(upLeftForce);
-            }
-            // '위쪽' 입력
-            else if (Input.GetKeyDown(KeyCode.UpArrow) && heroKnightRigidbody.velocity.y == 0) 
-            {
-                heroKnightRigidbody.AddForce(transform.up * jumpForce);
-            }
-            // '오른쪽' 입력
-            else if (Input.GetKey(KeyCode.RightArrow) && heroKnightRigidbody.velocity.y == 0)
-            {
-                idleChecker = 0;
-                heroKnightRigidbody.MovePosition(heroKnightRigidbody.position + walkForce * Time.fixedDeltaTime);   
-            }
-            // '왼쪽' 입력
-            else if (Input.GetKey(KeyCode.LeftArrow) && heroKnightRigidbody.velocity.y == 0)
-            {
-                idleChecker = 0;
-                heroKnightRigidbody.MovePosition(heroKnightRigidbody.position + walkForce * -1 * Time.fixedDeltaTime);                
-            }      
+            heroKnightAnimator.SetBool("isRun", isRun);             // heroKnight의 애니메이션 값을 계속해서 갱신
+            heroKnightAnimator.SetBool("isGrounded", isGrounded);   // heroKnight의 애니메이션 값을 계속해서 갱신
         }
-        
-        heroKnightAnimator.SetBool("isRun", isRun); // heroKnight의 애니메이션 값을 계속해서 갱신
-        heroKnightAnimator.SetBool("isGrounded", isGrounded); // heroKnight의 애니메이션 값을 계속해서 갱신
     }
+
+    // 이동 관련 기능들을 넣어둔 함수
+    private void MoveFunction()
+    {
+        // Idle 상태인지 아닌지 체크
+        idleChecker += Time.fixedDeltaTime;
+
+        if (idleChecker > 0.1f) // 단위 초. idleTime만큼 움직이지 않았다면.
+            isRun = false;
+        else
+            isRun = true;
+
+        // 캐릭터가 점프 후 낙하하고 있을 때 좀 더 빨리 떨어지도록 하기 위한 코드
+        if (heroKnightRigidbody.velocity.y < 0)
+        {
+            heroKnightRigidbody.AddForce(gravityForce);
+        }
+
+        // '오른쪽+위' 입력
+        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.RightArrow) && heroKnightRigidbody.velocity.y == 0)
+        {
+            heroKnightRigidbody.AddForce(upRightForce);
+        }
+        // '왼쪽+위' 입력
+        else if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.LeftArrow) && heroKnightRigidbody.velocity.y == 0)
+        {
+            heroKnightRigidbody.AddForce(upLeftForce);
+        }
+        // '위쪽' 입력
+        else if (Input.GetKeyDown(KeyCode.UpArrow) && heroKnightRigidbody.velocity.y == 0)
+        {
+            heroKnightRigidbody.AddForce(transform.up * jumpForce);
+        }
+        // '오른쪽' 입력
+        else if (Input.GetKey(KeyCode.RightArrow) && heroKnightRigidbody.velocity.y == 0)
+        {
+            idleChecker = 0;
+            heroKnightRigidbody.MovePosition(heroKnightRigidbody.position + walkForce * Time.fixedDeltaTime);
+        }
+        // '왼쪽' 입력
+        else if (Input.GetKey(KeyCode.LeftArrow) && heroKnightRigidbody.velocity.y == 0)
+        {
+            idleChecker = 0;
+            heroKnightRigidbody.MovePosition(heroKnightRigidbody.position + walkForce * -1 * Time.fixedDeltaTime);
+        }
+    }
+
+    // 공격 관련 기능들을 넣어둔 함수
+    private void AttackFunction()
+    {
+        attackDelay += Time.fixedDeltaTime;
+
+        // 키보드 a키를 눌렀을 경우
+        if (Input.GetKey(KeyCode.A) && attackDelay > 0.5f)
+        {
+            attackDelay = 0;
+            walkForce = Vector2.zero;
+            heroKnightAnimator.SetTrigger("trigger_Attack_A");
+        }
+
+        // 후딜이 끝나면 다시 움직이도록.
+        if(attackDelay > 0.5f)
+            walkForce = new Vector2(8.0f, 0);
+}
 
     // 바닥에 닿았을 때
     private void OnCollisionEnter2D(Collision2D collision)
