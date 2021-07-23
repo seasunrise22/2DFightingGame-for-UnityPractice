@@ -17,19 +17,21 @@ public class HeroKnightController : MonoBehaviour
 
     /* 캐릭터에 적용시킬 힘 */
     private float jumpForce = 350f;     // 위쪽 방향키 입력했을 때 캐릭터의 위쪽으로 작용할 힘.
-    private Vector2 upRightForce = new Vector2(250f, 330f); // 오른쪽위로 점프할 때 가할 힘
-    private Vector2 upLeftForce = new Vector2(-250f, 330f); // 왼쪽위로 점프할 때 가할 힘    
+    private Vector2 upRightForce = new Vector2(250f, 480f); // 오른쪽위로 점프할 때 가할 힘
+    private Vector2 upLeftForce = new Vector2(-250f, 480f); // 왼쪽위로 점프할 때 가할 힘    
     private Vector2 walkForce = new Vector2(8.0f, 0);       // 좌우 이동 할때의 힘     
     private Vector2 gravityForce = new Vector2(0f, -9.8f);  // 캐릭터가 낙하할 때 적용시킬 중력.
 
     /* 컴포넌트 접근용 */
     private Rigidbody2D heroKnightRigidbody;    // 리지드바디 접근용    
     private Animator heroKnightAnimator;        // 애니메이터 접근용
+    private GameObject opponentObject;          // 상대 오브젝트 접근용
 
     void Start()
     {
         heroKnightRigidbody = GetComponent<Rigidbody2D>();
         heroKnightAnimator = GetComponent<Animator>();
+        opponentObject = GameObject.FindWithTag("Opponent");
     }
 
     private void FixedUpdate()
@@ -41,11 +43,35 @@ public class HeroKnightController : MonoBehaviour
         else
         {
             MoveFunction();
-            AttackFunction();
+            AttackFunction();            
 
             heroKnightAnimator.SetBool("isRun", isRun);             // heroKnight의 애니메이션 값을 계속해서 갱신
             heroKnightAnimator.SetBool("isGrounded", isGrounded);   // heroKnight의 애니메이션 값을 계속해서 갱신
         }
+    }
+
+    private void RotateFunction()
+    {
+        // 내가 더 왼쪽에 있다면
+        if (transform.position.x < opponentObject.transform.position.x)
+            
+        {
+            Debug.Log("내가 더 왼쪽");
+            if (Mathf.Abs(transform.position.x) == Mathf.Abs(opponentObject.transform.position.x))
+                return;
+            else
+                transform.Rotate(0f, 180f, 0f);
+        }
+        // 내가 더 오른쪽에 있다면
+        else if (transform.position.x > opponentObject.transform.position.x)
+        {
+            Debug.Log("내가 더 오른쪽");
+            if (Mathf.Abs(transform.position.x) == Mathf.Abs(opponentObject.transform.position.x))
+                return;
+            else
+                transform.Rotate(0f, 180f, 0f);
+        }
+            
     }
 
     // 이동 관련 기능들을 넣어둔 함수
@@ -137,6 +163,8 @@ public class HeroKnightController : MonoBehaviour
         {
             isGrounded = true;
             heroKnightRigidbody.velocity = Vector2.zero; // 대각선 점프 후 착지했을 때 밀림 방지용.
+
+            RotateFunction(); // 바닥에 닿았을 때 상대와 나의 x값을 비교해서 마주보게끔 만든다.
         }
     }
 
