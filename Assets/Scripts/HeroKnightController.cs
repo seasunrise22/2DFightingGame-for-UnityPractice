@@ -8,7 +8,8 @@ public class HeroKnightController : MonoBehaviour
     private bool isDead = false;        // 사망여부    
     private bool isGrounded = false;    // 캐릭터가 점프했을 때 애니메이터에 Set시킬 점프 상태.
     private bool isRun = false;         // 캐릭터를 좌우로 조작했을 때 애니메이터에 Set시킬 달리기 상태.
-    private bool trigger_Attack_A = false;    // A 공격 애니메이션 재생용 트리거.
+    private int attackCount;            // 공격이 이중으로 들어가지 않도록 하기 위한 공격판정 변수.
+    private int test;                   // 카운트를 세기위한 테스트용 변수.
 
     /* 타이머 */
     private float idleChecker;          // 아무것도 입력하지 않았을 때의 행동(달리기->Idle)을 결정짓기 위한 타이머
@@ -110,6 +111,24 @@ public class HeroKnightController : MonoBehaviour
         if(attackDelay > 0.5f)
             walkForce = new Vector2(8.0f, 0);
 }
+
+    // 트리거로 설정해놓은 공격이 상대에게 히트했을 경우
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Opponent")
+        {
+            if(attackCount == 0)
+            {
+                Debug.Log("Hit! : " + test);
+                attackCount++;
+                test++;
+            }
+            else if(attackCount == 1)
+            {
+                attackCount--;
+            }
+        }
+    }
 
     // 바닥에 닿았을 때
     private void OnCollisionEnter2D(Collision2D collision)
