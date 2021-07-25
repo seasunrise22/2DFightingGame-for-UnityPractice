@@ -146,6 +146,7 @@ public class HeroKnightController : MonoBehaviour
             if(attackCount == 0)
             {
                 Debug.Log("Hit! : " + test);
+                GetComponent<PlayerHealth>().OnDamage(100); // 시험삼아 공겨 적중 시 데미지 100을 넘겨준다.
                 attackCount++;
                 test++;
             }

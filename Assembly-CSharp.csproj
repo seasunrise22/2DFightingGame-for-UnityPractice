@@ -71,6 +71,9 @@
     <Compile Include="Assets\Added By AssetStore\Hero Knight - Pixel Art\Demo\HeroKnight.cs" />
     <Compile Include="Assets\Added By AssetStore\Hero Knight - Pixel Art\Demo\Sensor_HeroKnight.cs" />
     <Compile Include="Assets\Scripts\HeroKnightController.cs" />
+    <Compile Include="Assets\Scripts\IDamageable.cs" />
+    <Compile Include="Assets\Scripts\LivingEntity.cs" />
+    <Compile Include="Assets\Scripts\PlayerHealth.cs" />
     <None Include="Assets\Added By AssetStore\Hero Knight - Pixel Art\ColorSwap\Sprites-ColorSwap.shader" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Develop/Unity/Project/LeeFightingGame2D/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
