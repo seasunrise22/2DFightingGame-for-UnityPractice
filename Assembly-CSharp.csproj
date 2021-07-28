@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\IDamageable.cs" />
     <Compile Include="Assets\Scripts\LivingEntity.cs" />
     <Compile Include="Assets\Scripts\PlayerHealth.cs" />
+    <Compile Include="Assets\Scripts\PositionSelectionThroughKeyboard.cs" />
     <None Include="Assets\Added By AssetStore\Hero Knight - Pixel Art\ColorSwap\Sprites-ColorSwap.shader" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Develop/Unity/Project/LeeFightingGame2D/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
