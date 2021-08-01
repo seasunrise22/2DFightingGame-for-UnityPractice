@@ -10,7 +10,7 @@ public class CharacterSelection : MonoBehaviour
 
     private void Start()
     {
-        index = PlayerPrefs.GetInt("CharacterSelected", 0);
+        index = PlayerPrefs.GetInt("CharacterSelected", 0); // 디폴트값은 0
 
         // 이 스크립트가 부착 된 오브젝트의 자식 오브젝트들 숫자만큼의 크기를 가진 배열 생성
         characterList = new GameObject[transform.childCount];   
@@ -61,7 +61,7 @@ public class CharacterSelection : MonoBehaviour
     // 선택 버튼을 눌렀을 때
     public void ConfirmButton()
     {
-        PlayerPrefs.SetInt("CharacterSelected", index);
-        SceneManager.LoadScene("Battle");        
+        PlayerPrefs.SetInt("CharacterSelected", index); // 다음에 캐릭터 선택 씬으로 돌아왔을 때 이전 선택 캐릭터가 보존됨. (로컬 저장)
+        SceneManager.LoadScene("Battle");               // 배틀씬으로 씬을 넘김.
     }
 }
