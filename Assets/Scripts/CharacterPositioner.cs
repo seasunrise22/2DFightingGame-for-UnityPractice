@@ -9,7 +9,8 @@ public class CharacterPositioner : MonoBehaviour
     private GameObject[] characterPrefabs;  // 히트박스랑 애니메이션 씌워진 실제 게임에 쓸 캐릭터 프리팹을 넣을 배열.
     private Vector3 leftCharacterPosition;  // 1P 캐릭터 위치.
     private Vector3 RightCharacterPosition; // 2P 캐릭터 위치.
-    private GameObject player;              // 플레이어가 선택한 캐릭터를 담을 변수.
+    private GameObject player;              // 플레이어가 선택한 캐릭터 오브젝트를 담을 변수.
+    private GameObject enemy;               // 적 오브젝트를 담을 변수(플레이어가 선택한 캐릭터 오브젝트 이외).
 
     private void Awake()
     {
@@ -32,13 +33,15 @@ public class CharacterPositioner : MonoBehaviour
 
         // 선택된 캐릭터를 깔끔하게 조작하기 위해 player 변수에 선택된 캐릭터의 프리팹을 할당.
         player = characterPrefabs[selectedCharacterIndex];
+        enemy = characterPrefabs[GetEnemyIndex(selectedCharacterIndex)];        
 
         // 일단 캐릭터들은 전부 비활성화해서 안 보이도록 해둔다.
         foreach (GameObject characters in characterPrefabs)
             characters.SetActive(false);
 
-        // 그리고 선택된 캐릭터만 활성화시킨다.
+        // 그리고 선택된 캐릭터와 적 캐릭터만 활성화시킨다.
         player.SetActive(true);
+        enemy.SetActive(true);
 
         // 선택된 포지션이 1P인가 2P인가에 따라 다른 포지션으로 선택된 캐릭터를 둔다.
         switch (selectedPosition)
@@ -46,13 +49,27 @@ public class CharacterPositioner : MonoBehaviour
             // 1P일경우
             case 1:
                 player.transform.Translate(leftCharacterPosition);
-                /*Instantiate(characterPrefabs[selectedCharacterIndex], leftCharacterPosition, Quaternion.identity);  // 캐릭터 프리팹 생성*/
+                enemy.transform.Translate(RightCharacterPosition);                
                 break;
             // 2P일경우
             case 2:
                 player.transform.Translate(RightCharacterPosition);
-                /*Instantiate(characterPrefabs[selectedCharacterIndex], RightCharacterPosition, Quaternion.identity); // 캐릭터 프리팹 생성*/
+                enemy.transform.Translate(leftCharacterPosition);
                 break;
         }
+    }
+
+    // 생성될 상대 캐릭터의 인덱스를 반환하는 메서드
+    private int GetEnemyIndex(int playerIndex)
+    {
+        // 생성할 적 캐릭터의 인덱스를 랜덤으로 뽑는다.
+        int enemyIndex = (int)Random.Range(0f, (float)transform.childCount);
+
+        // 생성할 캐릭터가 선택된 플레이어의 캐릭터와 같다면 다시 뽑는다.
+        while (enemyIndex == selectedCharacterIndex)
+            enemyIndex = (int)Random.Range(0f, (float)transform.childCount);
+
+        Debug.Log("Enemy Index is : " + enemyIndex);
+        return enemyIndex;
     }
 }
