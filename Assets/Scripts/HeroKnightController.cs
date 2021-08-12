@@ -57,19 +57,20 @@ public class HeroKnightController : MonoBehaviour
             
         {
             Debug.Log("내가 더 왼쪽");
-            if (Mathf.Abs(transform.position.x) == Mathf.Abs(opponentObject.transform.position.x))
+            /*if (Mathf.Abs(transform.position.x) == Mathf.Abs(opponentObject.transform.position.x))
                 return;
-            else
-                transform.Rotate(0f, 180f, 0f);
+            내가 이걸 왜 넣었지? 이거 넣으면 첨 시작할 때 -5, 5로 절대값 같아서 방향 안 바뀌는데... 무슨 이유가 있어서 넣었나?
+            else*/
+                transform.eulerAngles = new Vector3(0f, 0f, 0f);
         }
         // 내가 더 오른쪽에 있다면
         else if (transform.position.x > opponentObject.transform.position.x)
         {
             Debug.Log("내가 더 오른쪽");
-            if (Mathf.Abs(transform.position.x) == Mathf.Abs(opponentObject.transform.position.x))
+            /*if (Mathf.Abs(transform.position.x) == Mathf.Abs(opponentObject.transform.position.x))
                 return;
-            else
-                transform.Rotate(0f, 180f, 0f);
+            else*/
+                transform.eulerAngles = new Vector3(0f, 180f, 0f);
         }
             
     }
