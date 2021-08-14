@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealth : LivingEntitiy
+public class PlayerHealth : LivingEntity
 {
     public Slider healthSlider;    // 체력을 표시할 UI 슬라이더
 
