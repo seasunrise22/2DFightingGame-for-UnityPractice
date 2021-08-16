@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +11,7 @@ public class HeroKnightController : MonoBehaviour
 
     
 
-    /* 컴포넌트 접근용 */
+    *//* 컴포넌트 접근용 *//*
     private Rigidbody2D heroKnightRigidbody;    // 리지드바디 접근용    
     private Animator heroKnightAnimator;        // 애니메이터 접근용
     private GameObject opponentObject;          // 상대 오브젝트 접근용
@@ -90,3 +90,4 @@ public class HeroKnightController : MonoBehaviour
         }
     }
 }
+*/

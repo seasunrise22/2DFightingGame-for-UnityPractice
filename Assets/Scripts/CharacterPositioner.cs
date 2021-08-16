@@ -6,6 +6,7 @@ public class CharacterPositioner : MonoBehaviour
 {
     private int selectedPosition;           // 1p2p 포지션 선택씬에서 넘어 온 선택 된 포지션. 1P인가 2P인가.
     private int selectedCharacterIndex;     // 이전 캐릭터 선택씬에서 넘어 온 선택 된 캐릭터 인덱스.
+    private int selectedEnemyIndex;         // 이전 캐릭터 선택씬에서 넘어 온 선택 된 적 인덱스.
     private GameObject[] characterPrefabs;  // 히트박스랑 애니메이션 씌워진 실제 게임에 쓸 캐릭터 프리팹을 넣을 배열.
     private Vector3 leftCharacterPosition;  // 1P 캐릭터 위치.
     private Vector3 RightCharacterPosition; // 2P 캐릭터 위치.
@@ -17,6 +18,7 @@ public class CharacterPositioner : MonoBehaviour
         // 이전씬에서 선택된 포지션과 캐릭터 인덱스를 받아서 변수에 저장한다.
         selectedPosition = PlayerPrefs.GetInt("position");
         selectedCharacterIndex = PlayerPrefs.GetInt("CharacterSelected");
+        selectedEnemyIndex = PlayerPrefs.GetInt("EnemySelected");
 
         // 1p2p 캐릭터가 배치될 위치를 미리 변수로 지정해둠.
         leftCharacterPosition = new Vector3(-5f, -3f, 0f);   // 1P
@@ -33,7 +35,7 @@ public class CharacterPositioner : MonoBehaviour
 
         // 선택된 캐릭터를 깔끔하게 조작하기 위해 player 변수에 선택된 캐릭터의 프리팹을 할당.
         player = characterPrefabs[selectedCharacterIndex];
-        enemy = characterPrefabs[GetEnemyIndex(selectedCharacterIndex)];        
+        enemy = characterPrefabs[selectedEnemyIndex];        
 
         // 일단 캐릭터들은 전부 비활성화해서 안 보이도록 해둔다.
         foreach (GameObject characters in characterPrefabs)
@@ -57,19 +59,5 @@ public class CharacterPositioner : MonoBehaviour
                 enemy.transform.Translate(leftCharacterPosition);
                 break;
         }
-    }
-
-    // 생성될 상대 캐릭터의 인덱스를 반환하는 메서드
-    private int GetEnemyIndex(int playerIndex)
-    {
-        // 생성할 적 캐릭터의 인덱스를 랜덤으로 뽑는다.
-        int enemyIndex = (int)Random.Range(0f, (float)transform.childCount);
-
-        // 생성할 캐릭터가 선택된 플레이어의 캐릭터와 같다면 다시 뽑는다.
-        while (enemyIndex == selectedCharacterIndex)
-            enemyIndex = (int)Random.Range(0f, (float)transform.childCount);
-
-        Debug.Log("Enemy Index is : " + enemyIndex);
-        return enemyIndex;
-    }
+    }    
 }

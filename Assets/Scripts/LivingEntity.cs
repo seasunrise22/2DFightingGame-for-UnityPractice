@@ -47,7 +47,7 @@ public class LivingEntity : MonoBehaviour, IDamageable
         else
         {
             MoveFunction();     // 캐릭터 이동을 구현한 함수    
-            RotateFunction();   // 상대와 나의 x좌표값을 비교해서 서로 마주보게끔 방향을 돌리게 하기 위한 함수.
+            /*RotateFunction();*/   // 상대와 나의 x좌표값을 비교해서 서로 마주보게끔 방향을 돌리게 하기 위한 함수.
         }
     }
 
@@ -97,29 +97,29 @@ public class LivingEntity : MonoBehaviour, IDamageable
         }
     }
 
-    private void RotateFunction()
+    /*private void RotateFunction()
     {
         // 내가 더 왼쪽에 있다면
         if (transform.position.x < opponentObject.transform.position.x)
 
         {
             Debug.Log("내가 더 왼쪽");
-            /*if (Mathf.Abs(transform.position.x) == Mathf.Abs(opponentObject.transform.position.x))
+            *//*if (Mathf.Abs(transform.position.x) == Mathf.Abs(opponentObject.transform.position.x))
                 return;
             내가 이걸 왜 넣었지? 이거 넣으면 첨 시작할 때 -5, 5로 절대값 같아서 방향 안 바뀌는데... 무슨 이유가 있어서 넣었나?
-            else*/
+            else*//*
             transform.eulerAngles = new Vector3(0f, 0f, 0f);
         }
         // 내가 더 오른쪽에 있다면
         else if (transform.position.x > opponentObject.transform.position.x)
         {
             Debug.Log("내가 더 오른쪽");
-            /*if (Mathf.Abs(transform.position.x) == Mathf.Abs(opponentObject.transform.position.x))
+            *//*if (Mathf.Abs(transform.position.x) == Mathf.Abs(opponentObject.transform.position.x))
                 return;
-            else*/
+            else*//*
             transform.eulerAngles = new Vector3(0f, 180f, 0f);
         }
-    }
+    }*/
 
 
 

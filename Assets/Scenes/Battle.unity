@@ -165,6 +165,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HeavyBandit
       objectReference: {fileID: 0}
+    - target: {fileID: 3731886322890733294, guid: 186d79ade24a39b4888e3ca6cb774782,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 3731886322890733293, guid: 186d79ade24a39b4888e3ca6cb774782,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1109,6 +1114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1163931167}
+  - component: {fileID: 1163931166}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1116,6 +1122,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1163931166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163931165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c07a20659f1d66746abd707ea2d9bcc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1163931167
 Transform:
   m_ObjectHideFlags: 0
@@ -1197,7 +1215,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4016231403888890567, guid: f2067e158b6227f4f8cbcb871bb112a9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f2067e158b6227f4f8cbcb871bb112a9, type: 3}
 --- !u!4 &1628013002 stripped
 Transform:

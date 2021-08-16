@@ -58,10 +58,24 @@ public class CharacterSelection : MonoBehaviour
         characterList[index].SetActive(true);
     }
 
+    // 생성될 상대 캐릭터의 인덱스를 결정해서 반환하는 메서드
+    private int GetEnemyIndex(int playerIndex)
+    {
+        // 생성할 적 캐릭터의 인덱스를 랜덤으로 뽑는다.
+        int enemyIndex = (int)Random.Range(0f, (float)transform.childCount);
+
+        // 생성할 캐릭터가 선택된 플레이어의 캐릭터와 같다면 다시 뽑는다.
+        while (enemyIndex == playerIndex)
+            enemyIndex = (int)Random.Range(0f, (float)transform.childCount);
+
+        return enemyIndex;
+    }
+
     // 선택 버튼을 눌렀을 때
     public void ConfirmButton()
     {
-        PlayerPrefs.SetInt("CharacterSelected", index); // 다음에 캐릭터 선택 씬으로 돌아왔을 때 이전 선택 캐릭터가 보존됨. (로컬 저장)
-        SceneManager.LoadScene("Battle");               // 배틀씬으로 씬을 넘김.
+        PlayerPrefs.SetInt("CharacterSelected", index);             // 다음에 캐릭터 선택 씬으로 돌아왔을 때 이전 선택 캐릭터가 보존되면서 다른 씬에서 가져다 씀.
+        PlayerPrefs.SetInt("EnemySelected", GetEnemyIndex(index));  // 다른 씬에서 선택된 적 캐릭터가 뭔지 쉽게 판별 가능.
+        SceneManager.LoadScene("Battle");                           // 배틀씬으로 씬을 넘김.
     }
 }
