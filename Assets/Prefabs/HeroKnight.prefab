@@ -127,8 +127,7 @@ GameObject:
   - component: {fileID: 4016231403888890572}
   - component: {fileID: 4016231403888890568}
   - component: {fileID: 4016231403888890571}
-  - component: {fileID: 4016231403888890567}
-  - component: {fileID: 4016231403888890566}
+  - component: {fileID: 985554085}
   m_Layer: 0
   m_Name: HeroKnight
   m_TagString: Untagged
@@ -144,7 +143,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4016231403888890573}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: -3, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children:
   - {fileID: 4016231402603015079}
@@ -256,7 +255,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0.65}
   m_Size: {x: 0.4, y: 1.2}
   m_Direction: 0
---- !u!114 &4016231403888890567
+--- !u!114 &985554085
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -268,16 +267,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fabb3ed876fa9c645b2f097ddd291f7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4016231403888890566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4016231403888890573}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a33ffacae0b7bb42ade94b2ff1e7a4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthSlider: {fileID: 0}

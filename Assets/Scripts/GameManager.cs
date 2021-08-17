@@ -18,12 +18,11 @@ public class GameManager : MonoBehaviour
         //선택된 플레이어 캐릭터와 적 캐릭터 인덱스를 가져다가 변수에 넣는다.
         selectedPlayerIdx = PlayerPrefs.GetInt("CharacterSelected");
         selectedEnemyIdx = PlayerPrefs.GetInt("EnemySelected");
-    }
 
-    private void Start()
-    {
         //선택된 플레이어 캐릭터에게는 'Player' 태그를, 선택된 적 캐릭터에게는 'Opponent' 태그를 부착한다.
+        //주의!! 다른 오브젝트에서 태그를 가져다쓰는 코드를 Start에 넣어뒀으므로, 아래 태그를 붙이는 행위를 반드시 Awake에 넣어둬야 다른 오브젝트에서 태그를 가져다 쓸 수 있음.
+        //Start에 태그를 붙여버리면 순서상 Start == Start가 되어서 다른 오브젝트에서 태그를 못 찾는 현상이 발생함. 
         characterPrefabLists.transform.GetChild(selectedPlayerIdx).tag = "Player";
-        characterPrefabLists.transform.GetChild(selectedEnemyIdx).tag = "Opponent";
+        characterPrefabLists.transform.GetChild(selectedEnemyIdx).tag = "Enemy";
     }
 }
