@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\CharacterPositioner.cs" />
     <Compile Include="Assets\Scripts\CharacterSelection.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\HeavyBanditController.cs" />
     <Compile Include="Assets\Scripts\HeroKnightController.cs" />
     <Compile Include="Assets\Scripts\IDamageable.cs" />
     <Compile Include="Assets\Scripts\LivingEntity.cs" />

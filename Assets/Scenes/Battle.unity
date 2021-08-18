@@ -167,8 +167,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3731886322890733294, guid: 186d79ade24a39b4888e3ca6cb774782,
         type: 3}
-      propertyPath: m_TagString
-      value: Untagged
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3731886322890733293, guid: 186d79ade24a39b4888e3ca6cb774782,
         type: 3}
@@ -1144,6 +1144,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 1020713029}
+--- !u!1 &1268692395 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3731886322890733294, guid: 186d79ade24a39b4888e3ca6cb774782,
+    type: 3}
+  m_PrefabInstance: {fileID: 279038654}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1268692400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268692395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44ccc6a7245d2c749a1971c9d7efb7db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1620575133
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1155,6 +1173,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HeroKnight
+      objectReference: {fileID: 0}
+    - target: {fileID: 4016231403888890573, guid: f2067e158b6227f4f8cbcb871bb112a9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4016231403888890569, guid: f2067e158b6227f4f8cbcb871bb112a9,
         type: 3}
