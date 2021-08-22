@@ -147,7 +147,7 @@ public class HeavyBanditController : MonoBehaviour
         {
             if (attackCount == 0)
             {
-                gameManager.GetComponent<PlayerHealth>().OnDamage(100); // 시험삼아 공격 적중 시 데미지 100을 넘겨준다.
+                gameManager.GetComponent<PlayerHealth>().PlayerOnDamage(PlayerPrefs.GetInt("position"), 100); // 우선 시험삼아 데미지 100 넘겨줌.
                 attackCount++;
             }
             else if (attackCount == 1)

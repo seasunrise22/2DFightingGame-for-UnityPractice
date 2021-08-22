@@ -75,8 +75,6 @@
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\HeavyBanditController.cs" />
     <Compile Include="Assets\Scripts\HeroKnightController.cs" />
-    <Compile Include="Assets\Scripts\IDamageable.cs" />
-    <Compile Include="Assets\Scripts\LivingEntity.cs" />
     <Compile Include="Assets\Scripts\PlayerHealth.cs" />
     <Compile Include="Assets\Scripts\PositionSelectionThroughKeyboard.cs" />
     <None Include="Assets\Added By AssetStore\Hero Knight - Pixel Art\ColorSwap\Sprites-ColorSwap.shader" />
