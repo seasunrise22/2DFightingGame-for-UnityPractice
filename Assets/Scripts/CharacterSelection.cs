@@ -28,6 +28,39 @@ public class CharacterSelection : MonoBehaviour
             characterList[index].SetActive(true);
     }
 
+    private void Update()
+    {
+        // 왼쪽 화살표를 눌렀을 때
+        if(Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            characterList[index].SetActive(false);
+
+            index--;
+
+            if (index < 0)
+                index = characterList.Length-1;
+
+            characterList[index].SetActive(true);
+        }
+        // 오른쪽 화살표를 눌렀을 때
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            characterList[index].SetActive(false);
+
+            index++;
+
+            if (index >= characterList.Length)
+                index = 0;
+
+            characterList[index].SetActive(true);
+        }
+        // 스페이스바 눌렀을 때
+        else if(Input.GetKeyDown(KeyCode.Space))
+        {
+            ConfirmButton();
+        }
+    }
+
     // 왼쪽 버튼을 눌렀을 때
     public void ToggleLeft()
     {
