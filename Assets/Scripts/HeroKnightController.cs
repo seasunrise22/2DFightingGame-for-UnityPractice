@@ -18,29 +18,33 @@ public class HeroKnightController : MonoBehaviour
     /* 상태 관련 */
     private bool isGrounded = false;    // 캐릭터가 점프했을 때 애니메이터에 Set시킬 점프 상태.
     private bool isRun = false;         // 캐릭터를 좌우로 조작했을 때 애니메이터에 Set시킬 달리기 상태.
-    private int attackCount;            // 공격이 이중으로 들어가지 않도록 하기 위한 공격판정 변수.
     private string isPlayer;            // 이 오브젝트는 플레이어인가 적인가.
+    bool isAttack = false;              // 공격을 이중으로 넣지 않기 위한 상태변수.
 
     /* 참조용 변수 */
-    private Rigidbody2D hkRigidbody2D;  // 리지드바디 접근용.
-    private Animator hkAnimator;        // 애니메이터 접근용
-    private GameObject enemy;           // 적 오브젝트 접근용
-    private GameObject gameManager;     // 게임매니저 오브젝트 접근용.    
+    private Rigidbody2D hkRigidbody2D;      // 리지드바디 접근용.
+    private Animator hkAnimator;            // 애니메이터 접근용
+    private GameObject enemy;               // 적 오브젝트 접근용
+    private GameObject player;              // 플레이어 오브젝트 접근용.
+    private GameObject gameManager;        // 게임 매니저 접근용
+
+        
 
     void Start()
     {
-        gameManager = GameObject.Find("GameManager");   // GameManager 오브젝트 참조용.
+        gameManager = GameObject.Find("GameManager");
         hkRigidbody2D = GetComponent<Rigidbody2D>();
         hkAnimator = GetComponent<Animator>();
         isPlayer = gameObject.tag;                      // 이 오브젝트는 플레이어인가 적인가 이 오브젝트에 붙은 태그를 가져온다.
         enemy = GameObject.FindWithTag("Enemy");        // "Enemy"태그가 붙은 오브젝트를 가져와서 변수에 가져다 놓음.
+        player = GameObject.FindWithTag("Player");
     }
 
     private void FixedUpdate()
     {
         if (isPlayer == "Enemy")
         {
-            return; // 여기다 나중에 return 지우고 적일 때 알고리즘 작성하면 될 듯.
+            RotateFunction(gameObject.tag);
         }
         else if(isPlayer == "Player")
         {
@@ -118,22 +122,30 @@ public class HeroKnightController : MonoBehaviour
 
     private void RotateFunction(string isPlayer)
     {
-        if(isPlayer == "Enemy")
-        {
-            // 이 오브젝트가 적일 때의 상황
+        // 이 오브젝트가 적일 때의 상황
+        if (isPlayer == "Enemy")
+        {            
+            // 적이 더 왼쪽에 있다면
+            if (transform.position.x < player.transform.position.x)
+            {
+                transform.eulerAngles = new Vector3(0f, 0f, 0f);
+            }
+            // 적이 더 오른쪽에 있다면
+            else if (transform.position.x > player.transform.position.x)
+            {
+                transform.eulerAngles = new Vector3(0f, 180f, 0f);
+            }
         }
         else if(isPlayer == "Player")
         {
             // 내가 더 왼쪽에 있다면
             if (transform.position.x < enemy.transform.position.x)
             {
-                Debug.Log("내가 더 왼쪽");
                 transform.eulerAngles = new Vector3(0f, 0f, 0f);
             }
             // 내가 더 오른쪽에 있다면
             else if (transform.position.x > enemy.transform.position.x)
             {
-                Debug.Log("내가 더 오른쪽");
                 transform.eulerAngles = new Vector3(0f, 180f, 0f);
             }
         }        
@@ -142,17 +154,18 @@ public class HeroKnightController : MonoBehaviour
     // 트리거로 설정해놓은 공격이 상대에게 히트했을 경우
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy")
+        if (collision.tag == "Enemy" && !isAttack)
         {
-            if (attackCount == 0)
-            {
-                gameManager.GetComponent<PlayerHealth>().PlayerOnDamage(PlayerPrefs.GetInt("position"), 100); // 우선 시험삼아 데미지 100 넘겨줌. 
-                attackCount++;
-            }
-            else if (attackCount == 1)
-            {
-                attackCount--;
-            }
+            isAttack = true;
+            gameManager.GetComponent<PlayerHealth>().PlayerOnDamage(PlayerPrefs.GetInt("position"), 100); // 우선 시험삼아 데미지 100 넘겨줌.
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Enemy" && isAttack)
+        {
+            isAttack = false;
         }
     }
 
