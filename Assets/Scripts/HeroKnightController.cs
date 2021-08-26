@@ -110,16 +110,28 @@ public class HeroKnightController : MonoBehaviour
         attackDelay += Time.fixedDeltaTime;
 
         // 키보드 a키를 눌렀을 경우
-        if (Input.GetKey(KeyCode.A) && attackDelay > 0.5f)
+        if (Input.GetKey(KeyCode.A) && attackDelay > 0.3f)
         {
             attackDelay = 0;
             walkForce = Vector2.zero;
-            hkAnimator.SetTrigger("trigger_Attack_A");
+            hkAnimator.SetTrigger("trigger_Attack1");
+            StartCoroutine(PostDelay(0.3f));
         }
 
-        // 후딜이 끝나면 다시 움직이도록.
-        if (attackDelay > 0.5f)
-            walkForce = new Vector2(8.0f, 0);
+        // 키보드 s키를 눌렀을 경우
+        else if (Input.GetKey(KeyCode.S) && attackDelay > 0.6f)
+        {
+            attackDelay = 0;
+            walkForce = Vector2.zero;
+            hkAnimator.SetTrigger("trigger_Attack2");
+            StartCoroutine(PostDelay(0.6f));
+        }
+    }
+
+    IEnumerator PostDelay(float attackDelay)
+    { 
+        yield return new WaitForSeconds(attackDelay);
+        walkForce = new Vector2(8.0f, 0);
     }
 
     private void RotateFunction(string isPlayer)

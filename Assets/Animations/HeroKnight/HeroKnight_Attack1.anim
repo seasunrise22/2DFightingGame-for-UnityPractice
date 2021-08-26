@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HeroKnight_Attack_A
+  m_Name: HeroKnight_Attack1
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -38,11 +38,20 @@ AnimationClip:
         weightedMode: 0
         inWeight: 0
         outWeight: 0
+      - serializedVersion: 3
+        time: 0.2
+        value: 0
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: Attack_A_Collider_1
+    path: Attack1_Collider/Attack1_Collider_1
     classID: 61
     script: {fileID: 0}
   - curve:
@@ -66,11 +75,20 @@ AnimationClip:
         weightedMode: 0
         inWeight: 0
         outWeight: 0
+      - serializedVersion: 3
+        time: 0.2
+        value: 0
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: Attack_A_Collider_2
+    path: Attack1_Collider/Attack1_Collider_2
     classID: 61
     script: {fileID: 0}
   m_PPtrCurves:
@@ -97,14 +115,14 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 3042421918
+      path: 2103756194
       attribute: 3305885265
       script: {fileID: 0}
       typeID: 61
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 744422692
+      path: 3832386584
       attribute: 3305885265
       script: {fileID: 0}
       typeID: 61
@@ -165,11 +183,20 @@ AnimationClip:
         weightedMode: 0
         inWeight: 0
         outWeight: 0
+      - serializedVersion: 3
+        time: 0.2
+        value: 0
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: Attack_A_Collider_1
+    path: Attack1_Collider/Attack1_Collider_1
     classID: 61
     script: {fileID: 0}
   - curve:
@@ -193,11 +220,20 @@ AnimationClip:
         weightedMode: 0
         inWeight: 0
         outWeight: 0
+      - serializedVersion: 3
+        time: 0.2
+        value: 0
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: Attack_A_Collider_2
+    path: Attack1_Collider/Attack1_Collider_2
     classID: 61
     script: {fileID: 0}
   m_EulerEditorCurves: []

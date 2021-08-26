@@ -114,7 +114,7 @@ public class HeavyBanditController : MonoBehaviour
         {
             attackDelay = 0;
             walkForce = Vector2.zero;
-            hbAnimator.SetTrigger("trigger_Attack_A");
+            hbAnimator.SetTrigger("trigger_Attack1");
         }
 
         // 후딜이 끝나면 다시 움직이도록.
