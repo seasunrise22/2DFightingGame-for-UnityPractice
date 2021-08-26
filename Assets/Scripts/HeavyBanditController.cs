@@ -18,7 +18,6 @@ public class HeavyBanditController : MonoBehaviour
     /* 상태 관련 */
     private bool isGrounded = false;    // 캐릭터가 점프했을 때 애니메이터에 Set시킬 점프 상태.
     private bool isRun = false;         // 캐릭터를 좌우로 조작했을 때 애니메이터에 Set시킬 달리기 상태.
-    private int attackCount;            // 공격이 이중으로 들어가지 않도록 하기 위한 공격판정 변수.
     private string isPlayer;            // 이 오브젝트는 플레이어인가 적인가.
     bool isAttack = false;              // 공격을 이중으로 넣지 않기 위한 상태변수.
 
@@ -26,6 +25,7 @@ public class HeavyBanditController : MonoBehaviour
     private Rigidbody2D hbRigidbody2D;  // 리지드바디 접근용.
     private Animator hbAnimator;        // 애니메이터 접근용
     private GameObject enemy;           // 적 오브젝트 접근용
+    private Animator enemyAnimator;
     private GameObject player;
     private GameObject gameManager;     // 게임매니저 오브젝트 접근용.    
 
@@ -36,6 +36,7 @@ public class HeavyBanditController : MonoBehaviour
         hbAnimator = GetComponent<Animator>();
         isPlayer = gameObject.tag;                      // 이 오브젝트는 플레이어인가 적인가 이 오브젝트에 붙은 태그를 가져온다.
         enemy = GameObject.FindWithTag("Enemy");        // "Enemy"태그가 붙은 오브젝트를 가져와서 변수에 가져다 놓음.
+        enemyAnimator = enemy.GetComponent<Animator>();
         player = GameObject.FindWithTag("Player");
     }
 
@@ -44,6 +45,8 @@ public class HeavyBanditController : MonoBehaviour
         if (isPlayer == "Enemy")
         {
             RotateFunction(gameObject.tag);
+            hbAnimator.SetBool("isRun", isRun);             // 애니메이션의 상태를 계속해서 갱신
+            hbAnimator.SetBool("isGrounded", isGrounded);   // 애니메이션의 상태를 계속해서 갱신
         }
         else if(isPlayer == "Player")
         {
@@ -157,6 +160,7 @@ public class HeavyBanditController : MonoBehaviour
         {
             isAttack = true;
             gameManager.GetComponent<PlayerHealth>().PlayerOnDamage(PlayerPrefs.GetInt("position"), 100); // 우선 시험삼아 데미지 100 넘겨줌.
+            enemyAnimator.SetTrigger("isHurt");
         }
     }
 

@@ -26,17 +26,17 @@ public class HeroKnightController : MonoBehaviour
     private Animator hkAnimator;            // 애니메이터 접근용
     private GameObject enemy;               // 적 오브젝트 접근용
     private GameObject player;              // 플레이어 오브젝트 접근용.
-    private GameObject gameManager;        // 게임 매니저 접근용
-
-        
+    private GameObject gameManager;         // 게임 매니저 접근용
+    private Animator enemyAnimator;         // 적 애니메이터 접근용.
 
     void Start()
     {
         gameManager = GameObject.Find("GameManager");
         hkRigidbody2D = GetComponent<Rigidbody2D>();
         hkAnimator = GetComponent<Animator>();
-        isPlayer = gameObject.tag;                      // 이 오브젝트는 플레이어인가 적인가 이 오브젝트에 붙은 태그를 가져온다.
+        isPlayer = gameObject.tag;                      // 이 오브젝트는 플레이어인가 적인가 이 오브젝트에 붙은 태그를 가져온다.        
         enemy = GameObject.FindWithTag("Enemy");        // "Enemy"태그가 붙은 오브젝트를 가져와서 변수에 가져다 놓음.
+        enemyAnimator = enemy.GetComponent<Animator>();
         player = GameObject.FindWithTag("Player");
     }
 
@@ -45,6 +45,8 @@ public class HeroKnightController : MonoBehaviour
         if (isPlayer == "Enemy")
         {
             RotateFunction(gameObject.tag);
+            hkAnimator.SetBool("isRun", isRun);             // heroKnight의 애니메이션 값을 계속해서 갱신
+            hkAnimator.SetBool("isGrounded", isGrounded);   // heroKnight의 애니메이션 값을 계속해서 갱신
         }
         else if(isPlayer == "Player")
         {
@@ -158,6 +160,7 @@ public class HeroKnightController : MonoBehaviour
         {
             isAttack = true;
             gameManager.GetComponent<PlayerHealth>().PlayerOnDamage(PlayerPrefs.GetInt("position"), 100); // 우선 시험삼아 데미지 100 넘겨줌.
+            enemyAnimator.SetTrigger("isHurt");
         }
     }
 
