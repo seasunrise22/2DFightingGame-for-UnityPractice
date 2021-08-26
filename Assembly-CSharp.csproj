@@ -70,8 +70,6 @@
     <Compile Include="Assets\Added By AssetStore\Hero Knight - Pixel Art\Demo\DestroyEvent_HeroKnight.cs" />
     <Compile Include="Assets\Added By AssetStore\Hero Knight - Pixel Art\Demo\HeroKnight.cs" />
     <Compile Include="Assets\Added By AssetStore\Hero Knight - Pixel Art\Demo\Sensor_HeroKnight.cs" />
-    <Compile Include="Assets\Added By AssetStore\SpaceSkies Free\Demo\Scripts\LookCamera.cs" />
-    <Compile Include="Assets\Added By AssetStore\SpaceSkies Free\Demo\Scripts\SkyboxChanger.cs" />
     <Compile Include="Assets\Scripts\CharacterPositioner.cs" />
     <Compile Include="Assets\Scripts\CharacterSelection.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
