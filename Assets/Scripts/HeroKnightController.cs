@@ -8,7 +8,7 @@ public class HeroKnightController : MonoBehaviour
     private float jumpForce = 350f;                         // 위쪽 방향키 입력했을 때 캐릭터의 위쪽으로 작용할 힘.
     private Vector2 upRightForce = new Vector2(250f, 480f); // 오른쪽위로 점프할 때 가할 힘
     private Vector2 upLeftForce = new Vector2(-250f, 480f); // 왼쪽위로 점프할 때 가할 힘    
-    private Vector2 walkForce = new Vector2(8.0f, 0);       // 좌우 이동 할때의 힘     
+    public Vector2 walkForce = new Vector2(8.0f, 0);       // 좌우 이동 할때의 힘     
     private Vector2 gravityForce = new Vector2(0f, -9.8f);  // 캐릭터가 낙하할 때 적용시킬 중력.
 
     /* 각종 타이머 */
@@ -19,30 +19,26 @@ public class HeroKnightController : MonoBehaviour
     private bool isGrounded = false;    // 캐릭터가 점프했을 때 애니메이터에 Set시킬 점프 상태.
     private bool isRun = false;         // 캐릭터를 좌우로 조작했을 때 애니메이터에 Set시킬 달리기 상태.
     private string isPlayer;            // 이 오브젝트는 플레이어인가 적인가.
-    private bool isAttack = false;              // 공격을 이중으로 넣지 않기 위한 상태변수.
-    private enum Attacks                // 공격의 종류를 모아놓고 필요할 때 꺼내 쓰기 위한 열거형
-    {
-        attack1,
-        attack2
-    }
-    private Attacks nowAttack;          // 현재 어떤 공격을 하고 있는지 분별하기 위한 열거형 변수
+    
+    
+    
 
     /* 참조용 변수 */
     private Rigidbody2D hkRigidbody2D;      // 리지드바디 접근용.
-    private Animator hkAnimator;            // 애니메이터 접근용
+    public Animator hkAnimator;            // 애니메이터 접근용
     private GameObject enemy;               // 적 오브젝트 접근용
     private GameObject player;              // 플레이어 오브젝트 접근용.
-    private GameObject gameManager;         // 게임 매니저 접근용
-    private Animator enemyAnimator;         // 적 애니메이터 접근용.
+    
+    
 
     void Start()
     {
-        gameManager = GameObject.Find("GameManager");
+        
         hkRigidbody2D = GetComponent<Rigidbody2D>();
         hkAnimator = GetComponent<Animator>();
         isPlayer = gameObject.tag;                      // 이 오브젝트는 플레이어인가 적인가 이 오브젝트에 붙은 태그를 가져온다.        
-        enemy = GameObject.FindWithTag("Enemy");        // "Enemy"태그가 붙은 오브젝트를 가져와서 변수에 가져다 놓음.
-        enemyAnimator = enemy.GetComponent<Animator>();
+        enemy = GameObject.FindWithTag("Enemy");        // "Enemy"태그가 붙은 오브젝트를 가져와서 enemy변수에 가져다 놓음.
+
         player = GameObject.FindWithTag("Player");
     }
 
@@ -56,7 +52,7 @@ public class HeroKnightController : MonoBehaviour
         }
         else if(isPlayer == "Player")
         {
-            AttackFunction();           // 공격 후딜 설정, 공격 애니메이션 트리거 작동.
+            /*AttackFunction();           // 공격 후딜 설정, 공격 애니메이션 트리거 작동.*/
             MoveFunction();
             RotateFunction(gameObject.tag);   // 상대와 나의 x좌표값을 비교해서 서로 마주보게끔 방향을 돌리게 하기 위한 함수.
             hkAnimator.SetBool("isRun", isRun);             // heroKnight의 애니메이션 값을 계속해서 갱신
@@ -110,38 +106,9 @@ public class HeroKnightController : MonoBehaviour
         }
     }
 
-    // 공격 관련 기능들을 넣어둔 함수
-    private void AttackFunction()
-    {
-        attackDelay += Time.fixedDeltaTime;
+    
 
-        // 키보드 a키를 눌렀을 경우
-        if (Input.GetKey(KeyCode.A) && attackDelay > 0.3f)
-        {
-            nowAttack = Attacks.attack1;    // 현재 공격이 어떤 공격인가 분별하여 서로 다른 데미지를 넣기 위함.
-            attackDelay = 0;
-            walkForce = Vector2.zero;
-            hkAnimator.SetTrigger("trigger_Attack1");
-            StartCoroutine(PostDelay(0.3f));
-        }
-
-        // 키보드 s키를 눌렀을 경우
-        if (Input.GetKey(KeyCode.S) && attackDelay > 0.6f)
-        {
-            nowAttack = Attacks.attack2;    // 현재 공격이 어떤 공격인가 분별하여 서로 다른 데미지를 넣기 위함.
-            attackDelay = 0;
-            walkForce = Vector2.zero;
-            hkAnimator.SetTrigger("trigger_Attack2");
-            StartCoroutine(PostDelay(0.6f));
-        }
-    }
-
-    // 공격 후딜 설정용 IEnumerator
-    IEnumerator PostDelay(float attackDelay)
-    { 
-        yield return new WaitForSeconds(attackDelay);
-        walkForce = new Vector2(8.0f, 0);
-    }
+    
 
     private void RotateFunction(string isPlayer)
     {
@@ -174,32 +141,9 @@ public class HeroKnightController : MonoBehaviour
         }        
     }
 
-    // 트리거로 설정해놓은 공격이 상대에게 히트했을 경우
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Enemy" && !isAttack)
-        {
-            isAttack = true;            
-            enemyAnimator.SetTrigger("isHurt");
-            switch(nowAttack)
-            {
-                case Attacks.attack1 :
-                    gameManager.GetComponent<PlayerHealth>().PlayerOnDamage(PlayerPrefs.GetInt("position"), 100);   // 1번 공격의 데미지 적용.
-                    break;
-                case Attacks.attack2:
-                    gameManager.GetComponent<PlayerHealth>().PlayerOnDamage(PlayerPrefs.GetInt("position"), 200);   // 2번 공격의 데미지 적용.
-                    break;  
-            }            
-        }
-    }
+    
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.tag == "Enemy" && isAttack)
-        {
-            isAttack = false;
-        }
-    }
+    
 
     // 바닥에 닿았을 때
     private void OnCollisionEnter2D(Collision2D collision)
