@@ -19,7 +19,13 @@ public class HeroKnightController : MonoBehaviour
     private bool isGrounded = false;    // 캐릭터가 점프했을 때 애니메이터에 Set시킬 점프 상태.
     private bool isRun = false;         // 캐릭터를 좌우로 조작했을 때 애니메이터에 Set시킬 달리기 상태.
     private string isPlayer;            // 이 오브젝트는 플레이어인가 적인가.
-    bool isAttack = false;              // 공격을 이중으로 넣지 않기 위한 상태변수.
+    private bool isAttack = false;              // 공격을 이중으로 넣지 않기 위한 상태변수.
+    private enum Attacks                // 공격의 종류를 모아놓고 필요할 때 꺼내 쓰기 위한 열거형
+    {
+        attack1,
+        attack2
+    }
+    private Attacks nowAttack;          // 현재 어떤 공격을 하고 있는지 분별하기 위한 열거형 변수
 
     /* 참조용 변수 */
     private Rigidbody2D hkRigidbody2D;      // 리지드바디 접근용.
@@ -112,6 +118,7 @@ public class HeroKnightController : MonoBehaviour
         // 키보드 a키를 눌렀을 경우
         if (Input.GetKey(KeyCode.A) && attackDelay > 0.3f)
         {
+            nowAttack = Attacks.attack1;    // 현재 공격이 어떤 공격인가 분별하여 서로 다른 데미지를 넣기 위함.
             attackDelay = 0;
             walkForce = Vector2.zero;
             hkAnimator.SetTrigger("trigger_Attack1");
@@ -119,8 +126,9 @@ public class HeroKnightController : MonoBehaviour
         }
 
         // 키보드 s키를 눌렀을 경우
-        else if (Input.GetKey(KeyCode.S) && attackDelay > 0.6f)
+        if (Input.GetKey(KeyCode.S) && attackDelay > 0.6f)
         {
+            nowAttack = Attacks.attack2;    // 현재 공격이 어떤 공격인가 분별하여 서로 다른 데미지를 넣기 위함.
             attackDelay = 0;
             walkForce = Vector2.zero;
             hkAnimator.SetTrigger("trigger_Attack2");
@@ -128,6 +136,7 @@ public class HeroKnightController : MonoBehaviour
         }
     }
 
+    // 공격 후딜 설정용 IEnumerator
     IEnumerator PostDelay(float attackDelay)
     { 
         yield return new WaitForSeconds(attackDelay);
@@ -170,9 +179,17 @@ public class HeroKnightController : MonoBehaviour
     {
         if (collision.tag == "Enemy" && !isAttack)
         {
-            isAttack = true;
-            gameManager.GetComponent<PlayerHealth>().PlayerOnDamage(PlayerPrefs.GetInt("position"), 100); // 우선 시험삼아 데미지 100 넘겨줌.
+            isAttack = true;            
             enemyAnimator.SetTrigger("isHurt");
+            switch(nowAttack)
+            {
+                case Attacks.attack1 :
+                    gameManager.GetComponent<PlayerHealth>().PlayerOnDamage(PlayerPrefs.GetInt("position"), 100);   // 1번 공격의 데미지 적용.
+                    break;
+                case Attacks.attack2:
+                    gameManager.GetComponent<PlayerHealth>().PlayerOnDamage(PlayerPrefs.GetInt("position"), 200);   // 2번 공격의 데미지 적용.
+                    break;  
+            }            
         }
     }
 
