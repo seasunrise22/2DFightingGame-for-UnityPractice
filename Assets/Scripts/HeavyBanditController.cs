@@ -8,12 +8,11 @@ public class HeavyBanditController : MonoBehaviour
     private float jumpForce = 350f;                         // 위쪽 방향키 입력했을 때 캐릭터의 위쪽으로 작용할 힘.
     private Vector2 upRightForce = new Vector2(250f, 480f); // 오른쪽위로 점프할 때 가할 힘
     private Vector2 upLeftForce = new Vector2(-250f, 480f); // 왼쪽위로 점프할 때 가할 힘    
-    private Vector2 walkForce = new Vector2(8.0f, 0);       // 좌우 이동 할때의 힘     
+    public Vector2 walkForce = new Vector2(8.0f, 0);       // 좌우 이동 할때의 힘     
     private Vector2 gravityForce = new Vector2(0f, -9.8f);  // 캐릭터가 낙하할 때 적용시킬 중력.
 
     /* 각종 타이머 */
     private float idleChecker;          // 아무것도 입력하지 않았을 때의 행동(달리기->Idle)을 결정짓기 위한 타이머
-    private float attackDelay;          // 공격 후 후딜 설정용.  
 
     /* 상태 관련 */
     private bool isGrounded = false;    // 캐릭터가 점프했을 때 애니메이터에 Set시킬 점프 상태.
@@ -23,20 +22,16 @@ public class HeavyBanditController : MonoBehaviour
 
     /* 참조용 변수 */
     private Rigidbody2D hbRigidbody2D;  // 리지드바디 접근용.
-    private Animator hbAnimator;        // 애니메이터 접근용
+    public Animator hbAnimator;        // 애니메이터 접근용
     private GameObject enemy;           // 적 오브젝트 접근용
-    private Animator enemyAnimator;
-    private GameObject player;
-    private GameObject gameManager;     // 게임매니저 오브젝트 접근용.    
+    private GameObject player;  
 
     void Start()
     {
-        gameManager = GameObject.Find("GameManager");   // GameManager 오브젝트 참조용.
         hbRigidbody2D = GetComponent<Rigidbody2D>();
         hbAnimator = GetComponent<Animator>();
         isPlayer = gameObject.tag;                      // 이 오브젝트는 플레이어인가 적인가 이 오브젝트에 붙은 태그를 가져온다.
         enemy = GameObject.FindWithTag("Enemy");        // "Enemy"태그가 붙은 오브젝트를 가져와서 변수에 가져다 놓음.
-        enemyAnimator = enemy.GetComponent<Animator>();
         player = GameObject.FindWithTag("Player");
     }
 
@@ -50,7 +45,6 @@ public class HeavyBanditController : MonoBehaviour
         }
         else if(isPlayer == "Player")
         {
-            AttackFunction();           // 공격 후딜 설정, 공격 애니메이션 트리거 작동.
             MoveFunction();
             RotateFunction(gameObject.tag);                 // 상대와 나의 x좌표값을 비교해서 서로 마주보게끔 방향을 돌리게 하기 위한 함수.
             hbAnimator.SetBool("isRun", isRun);             // 애니메이션의 상태를 계속해서 갱신
@@ -104,24 +98,6 @@ public class HeavyBanditController : MonoBehaviour
         }
     }
 
-    // 공격 관련 기능들을 넣어둔 함수
-    private void AttackFunction()
-    {
-        attackDelay += Time.fixedDeltaTime;
-
-        // 키보드 a키를 눌렀을 경우
-        if (Input.GetKey(KeyCode.A) && attackDelay > 0.5f)
-        {
-            attackDelay = 0;
-            walkForce = Vector2.zero;
-            hbAnimator.SetTrigger("trigger_Attack1");
-        }
-
-        // 후딜이 끝나면 다시 움직이도록.
-        if (attackDelay > 0.5f)
-            walkForce = new Vector2(8.0f, 0);
-    }
-
     private void RotateFunction(string isPlayer)
     {
         // 이 오브젝트가 적일 때의 상황
@@ -151,17 +127,6 @@ public class HeavyBanditController : MonoBehaviour
                 transform.eulerAngles = new Vector3(0f, 0f, 0f);
             }
         }        
-    }
-
-    // 트리거로 설정해놓은 공격이 상대에게 히트했을 경우
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "Enemy" && !isAttack)
-        {
-            isAttack = true;
-            gameManager.GetComponent<PlayerHealth>().PlayerOnDamage(PlayerPrefs.GetInt("position"), 100); // 우선 시험삼아 데미지 100 넘겨줌.
-            enemyAnimator.SetTrigger("isHurt");
-        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)

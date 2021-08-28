@@ -14,23 +14,14 @@ public abstract class BasicAttack : MonoBehaviour
         attack1,
         attack2
     }
-    protected Attacks nowAttack;    // 현재 어떤 공격을 하고 있는가?
-    protected HeroKnightController hkController;    // HeroKnightController 스크립트에 접근하기 위한 참조용 변수.
+    protected Attacks nowAttack;    // 현재 어떤 공격을 하고 있는가?    
 
-    private void Start()
+    protected void Start()
     {
-        enemy = GameObject.FindWithTag("Enemy");        // "Enemy"태그가 붙은 오브젝트를 가져와서 enemy변수에 가져다 놓음.
-        hkController = GetComponent<HeroKnightController>();
+        enemy = GameObject.FindWithTag("Enemy");        // "Enemy"태그가 붙은 오브젝트를 가져와서 enemy변수에 가져다 놓음.        
         enemyAnimator = enemy.GetComponent<Animator>();
         gameManager = GameObject.Find("GameManager");
-    }
-
-    // 공격 후딜 설정용 IEnumerator
-    protected IEnumerator PostDelay(float attackDelay)
-    {
-        yield return new WaitForSeconds(attackDelay);
-        hkController.walkForce = new Vector2(8.0f, 0);  // 매개변수로 받은 후딜이 지난 후 다시 움직임 재개.
-    }
+    }    
 
     protected void OnTriggerExit2D(Collider2D collision)
     {
