@@ -13,32 +13,24 @@ public class HeroKnightController : MonoBehaviour
 
     /* 각종 타이머 */
     private float idleChecker;          // 아무것도 입력하지 않았을 때의 행동(달리기->Idle)을 결정짓기 위한 타이머
-    private float attackDelay;          // 공격 후 후딜 설정용.  
 
     /* 상태 관련 */
     private bool isGrounded = false;    // 캐릭터가 점프했을 때 애니메이터에 Set시킬 점프 상태.
     private bool isRun = false;         // 캐릭터를 좌우로 조작했을 때 애니메이터에 Set시킬 달리기 상태.
-    private string isPlayer;            // 이 오브젝트는 플레이어인가 적인가.
-    
-    
-    
+    private string isPlayer;            // 이 오브젝트는 플레이어인가 적인가. 
 
     /* 참조용 변수 */
     private Rigidbody2D hkRigidbody2D;      // 리지드바디 접근용.
     public Animator hkAnimator;            // 애니메이터 접근용
     private GameObject enemy;               // 적 오브젝트 접근용
     private GameObject player;              // 플레이어 오브젝트 접근용.
-    
-    
 
     void Start()
     {
-        
         hkRigidbody2D = GetComponent<Rigidbody2D>();
         hkAnimator = GetComponent<Animator>();
         isPlayer = gameObject.tag;                      // 이 오브젝트는 플레이어인가 적인가 이 오브젝트에 붙은 태그를 가져온다.        
         enemy = GameObject.FindWithTag("Enemy");        // "Enemy"태그가 붙은 오브젝트를 가져와서 enemy변수에 가져다 놓음.
-
         player = GameObject.FindWithTag("Player");
     }
 
@@ -50,14 +42,22 @@ public class HeroKnightController : MonoBehaviour
             hkAnimator.SetBool("isRun", isRun);             // heroKnight의 애니메이션 값을 계속해서 갱신
             hkAnimator.SetBool("isGrounded", isGrounded);   // heroKnight의 애니메이션 값을 계속해서 갱신
         }
-        else if(isPlayer == "Player")
+        if(isPlayer == "Player")
         {
-            /*AttackFunction();           // 공격 후딜 설정, 공격 애니메이션 트리거 작동.*/
             MoveFunction();
             RotateFunction(gameObject.tag);   // 상대와 나의 x좌표값을 비교해서 서로 마주보게끔 방향을 돌리게 하기 위한 함수.
             hkAnimator.SetBool("isRun", isRun);             // heroKnight의 애니메이션 값을 계속해서 갱신
             hkAnimator.SetBool("isGrounded", isGrounded);   // heroKnight의 애니메이션 값을 계속해서 갱신            
-        }        
+        }
+
+        // 상대에게 부딪혀서 밀려날 때 덜 밀리도록 하는 기능 구현
+        if(isGrounded && Mathf.Abs(hkRigidbody2D.velocity.x) > 3)
+        {
+            hkRigidbody2D.mass = 1000f;            
+        }
+        if (Mathf.Abs(hkRigidbody2D.velocity.x) == 0)
+            hkRigidbody2D.mass = 1f;
+        // 끝
     }
 
     // 이동 관련 기능들을 넣어둔 함수
@@ -106,10 +106,6 @@ public class HeroKnightController : MonoBehaviour
         }
     }
 
-    
-
-    
-
     private void RotateFunction(string isPlayer)
     {
         // 이 오브젝트가 적일 때의 상황
@@ -141,11 +137,7 @@ public class HeroKnightController : MonoBehaviour
         }        
     }
 
-    
-
-    
-
-    // 바닥에 닿았을 때
+    // 콜라이더에 닿았을 때 처리.
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.tag == "Ground")

@@ -43,13 +43,22 @@ public class HeavyBanditController : MonoBehaviour
             hbAnimator.SetBool("isRun", isRun);             // 애니메이션의 상태를 계속해서 갱신
             hbAnimator.SetBool("isGrounded", isGrounded);   // 애니메이션의 상태를 계속해서 갱신
         }
-        else if(isPlayer == "Player")
+        if(isPlayer == "Player")
         {
             MoveFunction();
             RotateFunction(gameObject.tag);                 // 상대와 나의 x좌표값을 비교해서 서로 마주보게끔 방향을 돌리게 하기 위한 함수.
             hbAnimator.SetBool("isRun", isRun);             // 애니메이션의 상태를 계속해서 갱신
             hbAnimator.SetBool("isGrounded", isGrounded);   // 애니메이션의 상태를 계속해서 갱신           
-        }        
+        }
+
+        // 상대에게 부딪혀서 밀려날 때 덜 밀리도록 하는 기능 구현
+        if (isGrounded && Mathf.Abs(hbRigidbody2D.velocity.x) > 3)
+        {
+            hbRigidbody2D.mass = 1000f;
+        }
+        if (Mathf.Abs(hbRigidbody2D.velocity.x) == 0)
+            hbRigidbody2D.mass = 1f;
+        // 끝
     }
 
     // 이동 관련 기능들을 넣어둔 함수
