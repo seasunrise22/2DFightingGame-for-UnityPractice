@@ -20,15 +20,13 @@ public class HeroKnightController : MonoBehaviour
     private string isPlayer;            // 이 오브젝트는 플레이어인가 적인가. 
 
     /* 참조용 변수 */
-    private Rigidbody2D hkRigidbody2D;      // 리지드바디 접근용.
+    public Rigidbody2D hkRigidbody2D;      // 리지드바디 접근용.
     public Animator hkAnimator;            // 애니메이터 접근용
     private GameObject enemy;               // 적 오브젝트 접근용
     private GameObject player;              // 플레이어 오브젝트 접근용.
 
     void Start()
     {
-        hkRigidbody2D = GetComponent<Rigidbody2D>();
-        hkAnimator = GetComponent<Animator>();
         isPlayer = gameObject.tag;                      // 이 오브젝트는 플레이어인가 적인가 이 오브젝트에 붙은 태그를 가져온다.        
         enemy = GameObject.FindWithTag("Enemy");        // "Enemy"태그가 붙은 오브젝트를 가져와서 enemy변수에 가져다 놓음.
         player = GameObject.FindWithTag("Player");

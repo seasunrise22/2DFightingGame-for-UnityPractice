@@ -12,11 +12,11 @@ public class GameManager : MonoBehaviour
     private int selectedEnemyIdx;               //이전 캐릭터 셀렉트 씬에서 넘어 온 적 캐릭터 인덱스
     private GameObject characterPrefabLists;    //캐릭터 프리펩이 담겨져 있는 리스트 'CharacterPrefabs' 오브젝트
 
-    private GameObject timerText;   // 체력바 사이 카운트 숫자를 제어하기 위한 변수
+    public GameObject timerText;   // 체력바 사이 카운트 숫자를 제어하기 위한 변수
 
     // 게임 시간 초기값. 반올림한 값으로 표시되기 때문에 99.49999.. ~ 98.5000 까지가 1초임.
     // 99f로 시작해버리면 처음 1초는 1초가 아닌 0.5초가 되어버림. ex)98.999~98.5 까지만 99로 표시. 이후 98
-    private float timeLeft = 99.5f;        
+    public float timeLeft = 99.5f;        
 
     private void Awake()
     {
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
         timeLeft -= Time.deltaTime;         
         if(timeLeft < 0.5f)
         {
-            timerText.GetComponent<Text>().text = "끝";
+            timerText.GetComponent<Text>().text = "GameOver";
         }
     }
 }

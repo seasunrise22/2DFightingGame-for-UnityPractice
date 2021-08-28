@@ -53,6 +53,12 @@ public class PlayerHealth : MonoBehaviour
 
     public void EnemyDie()
     {
-        Debug.Log("적 죽었다");
+        Debug.Log("Enemy Died");
+        GameObject enemy = GameObject.FindWithTag("Enemy");
+        enemy.GetComponent<Animator>().SetBool("isDead", true);
+
+        GameObject gm = GameObject.Find("GameManager");
+        gm.GetComponent<GameManager>().timeLeft = 0f;
+
     }
 }
